@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { ledgerRow, renderHistory } from '../src/ledger.mjs';
@@ -26,4 +26,16 @@ test('renderHistory shows before → after between first and latest run', () => 
   assert.match(h, /findings resolved: DEAD_LINK, DESC_MISSING, MARKDOWN_COVERAGE/);
   assert.match(h, /findings new: NO_DESCRIBEDBY_LINK/);
   assert.match(h, /REWRITE → PUBLISH/);
+});
+
+test('renderHistory renders crawler fetch windows when fetches/*.json exist', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'ledger-'));
+  writeFileSync(join(dir, 'runs.jsonl'), JSON.stringify(ledgerRow({ host: 'x.ch', stamp: 's', fingerprint: 'a', detScore: 50, findings: [], qa: null, lens: null, gen: null, model: 'none' })) + '\n');
+  mkdirSync(join(dir, 'fetches'));
+  writeFileSync(join(dir, 'fetches', 'week-before.json'), JSON.stringify({ generated: 't', days: 7, byBot: { gptbot: 4, browser: 9 }, byPath: { '/llms.txt': 10, '/de/pricing.md': 3 }, byDay: {}, total: 13 }));
+  const h = renderHistory(dir);
+  assert.match(h, /## Crawler fetches/);
+  assert.match(h, /week-before .*7 days.*13 fetch/);
+  assert.match(h, /gptbot 4/);
+  assert.match(h, /\/llms\.txt 10/);
 });

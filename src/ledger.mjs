@@ -1,7 +1,7 @@
 // Run ledger: files every run under <reports>/sites/<host>/runs/<stamp>/ and appends one row to
 // <reports>/sites/<host>/runs.jsonl, so "before vs after" is a diff between two rows, not memory.
 // Rows are append-only; a run is never edited after it is written (same rule as PDDE's RUNS.md).
-import { mkdirSync, cpSync, appendFileSync, readFileSync, existsSync, writeFileSync } from 'node:fs';
+import { mkdirSync, cpSync, appendFileSync, readFileSync, existsSync, writeFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 export function ledgerRow({ host, stamp, fingerprint, detScore, findings, qa, lens, gen, model }) {
@@ -56,6 +56,19 @@ export function renderHistory(siteDir) {
     L.push(`- findings new: ${fresh.join(', ') || 'none'}`);
     if (changed.length) L.push(`- findings changed in count: ${changed.join(', ')}`);
     L.push('', 'Caveat: reviewer score and agent test have run-to-run variance; rule score and finding ids are deterministic for the same live site.');
+  }
+  const fdir = join(siteDir, 'fetches');
+  if (existsSync(fdir)) {
+    const files = readdirSync(fdir).filter((f) => f.endsWith('.json')).sort();
+    if (files.length) {
+      L.push('', '## Crawler fetches (agent_surface_fetch events, our own Cloudflare middleware)', '');
+      for (const f of files) {
+        const w = JSON.parse(readFileSync(join(fdir, f), 'utf8'));
+        const top = (o) => Object.entries(o).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([k, v]) => `${k} ${v}`).join(', ');
+        L.push(`- ${f.replace(/\.json$/, '')} (${w.days} days, generated ${w.generated}): ${w.total} fetch(es). By bot: ${top(w.byBot) || 'none'}. By path: ${top(w.byPath) || 'none'}.`);
+      }
+      L.push('', 'A fetch is a request that reached our origin. Browser and other-bot rows are people and generic tools; the AI-crawler rows are the ones the experiment is about.');
+    }
   }
   return L.join('\n') + '\n';
 }
