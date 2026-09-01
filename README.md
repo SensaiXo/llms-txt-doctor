@@ -80,6 +80,11 @@ each finding is, and what the top-decile files have in common. That is what cali
 subdomains are excluded, but treat it as untrusted input and run the benchmark behind an antivirus or
 network filter (Avast blocked one entry as malicious on the first run).
 
+**Run ledger.** `--reports <dir>` files every run under `<dir>/sites/<host>/runs/<stamp>/`, appends one
+row to `runs.jsonl` and regenerates `HISTORY.md` with a first→latest before/after (scores, wrong
+answers, findings resolved/new). Runs are append-only. `src/import-run.mjs` files a run made before
+the flag existed.
+
 ## Requirements
 
 - Node 22+ (Engawa itself asks for 24; it loads fine on 22, install with `--ignore-engines`)
@@ -89,7 +94,7 @@ network filter (Avast blocked one entry as malicious on the first run).
 ## Options
 
 ```
-llms-txt-doctor <url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--json]
+llms-txt-doctor <url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--reports dir] [--json]
 ```
 
 ## What this is not

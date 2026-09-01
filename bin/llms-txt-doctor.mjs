@@ -7,11 +7,12 @@ import { runChecks, score } from '../src/checks.mjs';
 import { buildCase } from '../src/case.mjs';
 import { runLenses, runGenerate, LENSES } from '../src/lenses.mjs';
 import { runQa, formatQa } from '../src/qa.mjs';
+import { ledgerRow, fileRun } from '../src/ledger.mjs';
 
 const args = process.argv.slice(2);
 const url = args.find((a) => !a.startsWith('--'));
 const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
-if (!url) { console.error('usage: llms-txt-doctor <url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--json]'); process.exit(1); }
+if (!url) { console.error('usage: llms-txt-doctor <url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--reports dir] [--json]'); process.exit(1); }
 const model = opt('--model', 'opus');
 const maxPages = Number(opt('--max-pages', 60));
 const noLenses = args.includes('--no-lenses');
@@ -108,5 +109,12 @@ if (lens) {
   for (const r of lens.reports) R.push(`### ${r.name} (${r.verdict})`, '', r.text, '');
 }
 writeFileSync(join(outDir, 'report.md'), R.join('\n'));
+// ---- ledger: file this run under the reports repo so before/after is a diff, not memory ---
+const reportsDir = opt('--reports', null);
+if (reportsDir) {
+  const row = ledgerRow({ host: new URL(c.origin).hostname, stamp, fingerprint: frozen.fingerprint, detScore, findings, qa, lens, gen, model: noLenses ? 'none' : model });
+  const siteDir = fileRun(reportsDir, row.host, stamp, outDir, row);
+  console.log(`${DIM}filed: ${siteDir} (runs.jsonl + HISTORY.md updated)${RESET}`);
+}
 if (args.includes('--json')) console.log(JSON.stringify({ origin: c.origin, fingerprint: frozen.fingerprint, deterministicScore: detScore, findings, verdict: lens?.verdict, score: lens?.score, outDir }, null, 2));
 console.log(`\n${DIM}written: ${outDir}${RESET}`);

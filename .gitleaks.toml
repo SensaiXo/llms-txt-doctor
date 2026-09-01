@@ -1,0 +1,8 @@
+# Cloudflare Web Analytics beacon tokens are public by design: they sit in the site's HTML for
+# every visitor. Our runs quote page HTML verbatim, so they show up. Not a secret.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "public site tokens quoted from crawled HTML"
+regexes = ['''data-cf-beacon=.{0,40}token''', '''cloudflareinsights''']

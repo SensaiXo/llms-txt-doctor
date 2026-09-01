@@ -79,13 +79,15 @@ export async function runQa(c, { model = 'sonnet', timeoutMs = 10_000, onStep = 
       const a = answers.find((x) => x.i === i) ?? { answer: 'CANNOT ANSWER', source: null };
       items.push({ i, question: questions[i].q, expectUrl: questions[i].expectUrl, expectFact: questions[i].expectFact, expectText: exp.text, answer: a.answer, source: a.source, fetched: (picks.find((p) => p.i === i)?.urls ?? []) });
     }
+    // 2026-09-01 designtakt run: the grader marked a correct answer WRONG because the cited page was
+    // cut at 5000 chars before the facts block. Give the grader the full capped page (PAGE_CAP).
     // The grader sees the expected page AND the page the assistant cited: a fact that is true on
     // the cited page is not WRONG just because the question writer expected a different page.
     for (const it of items) {
       const src = it.source && /^https?:/.test(it.source) && (listed.has(it.source) || sameOrigin(it.source)) ? it.source : null;
       it.sourceText = src ? (await fetchText(src, cache, timeoutMs)).text : '';
     }
-    const itemsText = items.map((it) => `### ${it.i}\nQ: ${it.question}\nExpected fact: ${it.expectFact}\nExpected page (${it.expectUrl}):\n${cap(it.expectText, 5000) || '(page not fetchable)'}\nPage the assistant cited (${it.source ?? 'none'}):\n${cap(it.sourceText, 5000) || '(none)'}\nAssistant answer: ${it.answer}`).join('\n\n');
+    const itemsText = items.map((it) => `### ${it.i}\nQ: ${it.question}\nExpected fact: ${it.expectFact}\nExpected page (${it.expectUrl}):\n${cap(it.expectText, PAGE_CAP) || '(page not fetchable)'}\nPage the assistant cited (${it.source ?? 'none'}):\n${cap(it.sourceText, PAGE_CAP) || '(none)'}\nAssistant answer: ${it.answer}`).join('\n\n');
     const grades = parseJson(await ask('qa-grade.md', { ITEMS: itemsText }, 'grade'));
     for (const it of items) { const g = grades.find((x) => x.i === it.i); it.grade = g?.grade ?? 'UNGRADED'; it.why = g?.why ?? ''; }
     const n = (g) => items.filter((it) => it.grade === g).length;
