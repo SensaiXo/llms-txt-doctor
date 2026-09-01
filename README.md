@@ -87,7 +87,7 @@ the flag existed.
 
 ## Requirements
 
-- Node 22+ (Engawa itself asks for 24; it loads fine on 22, install with `--ignore-engines`)
+- Node 22+. One dependency (Engawa's CLI) declares Node 24 in its engines field; it runs fine on 22, but if your npm config sets `engine-strict=true`, install with `npm_config_engine_strict=false npx is-agent-ready ...` or relax the flag.
 - [Claude Code](https://claude.com/claude-code) on PATH and logged in, for layer 2 only.
   `--no-lenses` runs layer 1 alone with no AI at all. Without Claude Code on PATH the command
   runs the rule checks only and says so.
