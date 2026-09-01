@@ -31,7 +31,9 @@ export function fileRun(reportsDir, host, stamp, outDir, row) {
 
 export function readRuns(siteDir) {
   const f = join(siteDir, 'runs.jsonl');
-  return existsSync(f) ? readFileSync(f, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)) : [];
+  const rows = existsSync(f) ? readFileSync(f, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)) : [];
+  // chronological, not insertion order: late imports of old runs must not become the "latest"
+  return rows.sort((a, b) => String(a.stamp).localeCompare(String(b.stamp)));
 }
 
 // Before/after between the first and the latest run, plus the full row table.
