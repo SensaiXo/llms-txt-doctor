@@ -17,7 +17,7 @@ export const LENSES = [
   { key: 'retrieval',   name: 'Description & Retrieval',    prompt: 'description-retrieval.md',    slot: 'REPORT_RETRIEVAL' },
 ];
 
-function runIsolated(sandbox, model, systemPrompt, userPrompt, onChunk = () => {}) {
+export function runIsolated(sandbox, model, systemPrompt, userPrompt, onChunk = () => {}) {
   return new Promise((resolve, reject) => {
     const cli = process.platform === 'win32' ? 'claude.cmd' : 'claude';
     const sysFile = join(sandbox, `sys-${Math.random().toString(36).slice(2)}.md`);
@@ -47,15 +47,20 @@ function runIsolated(sandbox, model, systemPrompt, userPrompt, onChunk = () => {
   });
 }
 
-function splitPrompt(file, marker) {
+export function splitPrompt(file, marker) {
   const raw = readFileSync(join(PROMPTS, file), 'utf8');
   const [system, tail] = raw.split(marker);
   return { system: system.trim(), tail: (tail ?? '').trim() };
 }
 
-export async function runLenses(caseText, { model = 'opus', onProgress = () => {} } = {}) {
+export function makeSandbox() {
   const sandbox = mkdtempSync(join(tmpdir(), 'llmsdoc-'));
   writeFileSync(join(sandbox, 'isolation.json'), JSON.stringify({ hooks: {}, enabledPlugins: {}, disableAllHooks: true }));
+  return sandbox;
+}
+
+export async function runLenses(caseText, { model = 'opus', onProgress = () => {} } = {}) {
+  const sandbox = makeSandbox();
   try {
     const reports = await Promise.all(LENSES.map(async (l) => {
       const { system, tail } = splitPrompt(l.prompt, /^## Frozen Case.*$/m);
@@ -79,6 +84,22 @@ export async function runLenses(caseText, { model = 'opus', onProgress = () => {
     const scoreM = synthesis.match(/SCORE:\s*(\d{1,3})/);
     const proposed = synthesis.match(/```(?:markdown|text|md)?\s*\n(# [\s\S]*?)\n```/)?.[1] ?? null;
     return { reports, synthesis, verdict, score: scoreM ? Number(scoreM[1]) : null, proposed };
+  } finally {
+    rmSync(sandbox, { recursive: true, force: true });
+  }
+}
+
+// Generate mode: the site has no llms.txt. One sealed drafter, same isolation, drafts from the
+// frozen case (site digest + sitemap page digests). Same hard rule: URLs only from the case.
+export async function runGenerate(caseText, { model = 'opus', onProgress = () => {} } = {}) {
+  const sandbox = makeSandbox();
+  try {
+    const { system, tail } = splitPrompt('generate.md', /^## Frozen Case.*$/m);
+    const user = tail.replace('{{CASE}}', caseText);
+    const text = await runIsolated(sandbox, model, system, user, (n) => onProgress(n, false));
+    onProgress(text.length, true);
+    const proposed = text.match(/```(?:markdown|text|md)?\s*\n(# [\s\S]*?)\n```/)?.[1] ?? null;
+    return { text, proposed };
   } finally {
     rmSync(sandbox, { recursive: true, force: true });
   }

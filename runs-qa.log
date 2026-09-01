@@ -1,0 +1,53 @@
+[2m› inspecting site with Engawa[0m
+[2m› fetching /llms.txt[0m
+[2m› checking 33 linked resources[0m
+[2m› digesting 50 of 50 sitemap pages not in llms.txt[0m
+
+[1mllms.txt doctor[0m  https://schnellstart.ai  case 55ba1ce0a049
+deterministic score [1m76/100[0m  blocking 0  advisory 23  info 11
+  🟨 NON_LINK_LINES_IN_SECTION  section "Suitable Use Cases" has 4 line(s) that are not "- [title](url): notes"
+  🟨 HTML_LINKED_MD_EXISTS      [KI-Beratung Schweiz: Vergleich und Auswahl] links the HTML page but a markdown twin exists; link the .md
+  🟨 HTML_LINKED_MD_EXISTS      [KI-Beratung in Thurgau und der Ostschweiz] links the HTML page but a markdown twin exists; link the .md
+  🟨 HTML_WITHOUT_MD_TWIN       [Treuhand & Buchhaltung] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Bau & Handwerk] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Gesundheitswesen] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Recht & Anwaltskanzleien] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Industrie & Fertigung] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Handel & E-Commerce] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Microsoft 365 Copilot rollout guide (EN)] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Microsoft 365 Copilot: sicherer Einstieg für KMU] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [KI im Treuhandbüro: sicher & einfach] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Claude Code für KMU: agentische KI sicher einsetzen] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [KI-Tool-Kompass: welches KI-Tool für welchen Job?] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Free 15-minute Klartext-Call] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Book a call in English] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Workshop case studies] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [AI Website Blueprint (DE)] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [AI Website Blueprint (EN)] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [Prozesse automatisieren ohne Code] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [KI für KMU: Praktischer Einstieg] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [KI-Integration für KMU: Das Fundament] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  🟨 HTML_WITHOUT_MD_TWIN       [KI und DSGVO: Compliance in der Schweiz] is HTML with no markdown alternative (.md, .html.md, index.md, rel=alternate)
+  [2m·  DESC_TOO_SHORT             description "regional page" says little about when to fetch [KI-Beratung in Thurgau und der Ostschweiz][0m
+  [2m·  DESC_TOO_SHORT             description "healthcare" says little about when to fetch [Gesundheitswesen][0m
+  [2m·  DESC_TOO_SHORT             description "legal" says little about when to fetch [Recht & Anwaltskanzleien][0m
+  [2m·  DESC_TOO_SHORT             description "manufacturing" says little about when to fetch [Industrie & Fertigung][0m
+  [2m·  DESC_TOO_SHORT             description "tutorial" says little about when to fetch [Prozesse automatisieren ohne Code][0m
+  [2m·  DESC_TOO_SHORT             description "tutorial" says little about when to fetch [KI für KMU: Praktischer Einstieg][0m
+  [2m·  DESC_TOO_SHORT             description "strategy" says little about when to fetch [KI-Integration für KMU: Das Fundament][0m
+  [2m·  DESC_TOO_SHORT             description "compliance" says little about when to fetch [KI und DSGVO: Compliance in der Schweiz][0m
+  [2m·  NO_DESCRIBEDBY_LINK        homepage has no <link rel="describedby"> or Link header pointing at /llms.txt[0m
+  [2m·  MARKDOWN_COVERAGE          9 of 33 links point at markdown[0m
+  [2m·  SITEMAP_PAGES_NOT_LISTED   50 of 60 sitemap URLs are not in llms.txt (that can be correct: llms.txt is curated, not a sitemap)[0m
+
+[1magent test[0m [2m(sealed sonnet, only llms.txt + up to 2 fetches per question)[0m
+  questions ✓
+  pick ✓
+  fetch 14 page(s) ✓
+  answer ✓
+  grade ✓
+  [1m8/10 correct[0m, 🟥 1 wrong, 1 declined
+  🟥 WRONG    Was kosten die KI-Beratung und Workshops bei schnellstart.ai?
+  · DECLINED Was kostet die KI-Einführung insgesamt für ein Schweizer KMU?
+
+[2mwritten: runs/qa-test[0m

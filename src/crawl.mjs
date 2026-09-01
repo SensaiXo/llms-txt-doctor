@@ -30,7 +30,7 @@ export function markdownTwinCandidates(url) {
 
 async function digestResource(url, timeoutMs) {
   const r = await fetchRaw(url, { timeoutMs });
-  const out = { url, finalUrl: r.finalUrl, status: r.status, contentType: r.contentType, error: r.error, kind: 'other', html: null, text: '', mdTwin: null, mdTwinChecked: [] };
+  const out = { url, finalUrl: r.finalUrl, status: r.status, contentType: r.contentType, error: r.error, kind: 'other', html: null, text: '', bytes: r.bytes.length, mdTwin: null, mdTwinChecked: [] };
   if (!r.ok) return out;
   const { text } = decodeUtf8(r.bytes);
   if (isMarkdown(r.contentType, r.finalUrl) || (!isHtml(r.contentType) && /^\s*#\s/.test(text))) {
@@ -61,32 +61,42 @@ async function digestResource(url, timeoutMs) {
   return out;
 }
 
-export async function crawl(inputUrl, { maxPages = 60, timeoutMs = 10_000, log = () => {} } = {}) {
+// light: benchmark mode; caps the link checks and skips the unlisted-page digest (no lenses will run).
+export async function crawl(inputUrl, { maxPages = 60, timeoutMs = 10_000, log = () => {}, light = false, llmsUrl = null } = {}) {
   log('inspecting site with Engawa');
   const inspect = await runInspect({ inputUrl, maxPages, timeoutMs, allowLocal: false });
   const origin = inspect.target.origin;
 
   log('fetching /llms.txt');
-  const llmsRes = await fetchRaw(new URL('/llms.txt', origin).href, { timeoutMs });
+  const llmsRes = await fetchRaw(llmsUrl ?? new URL('/llms.txt', origin).href, { timeoutMs });
   const decoded = llmsRes.ok ? decodeUtf8(llmsRes.bytes) : { text: '', valid: true, mojibake: 0, replacement: 0 };
   const parsed = llmsRes.ok ? parseLlmsTxt(decoded.text) : null;
   const links = parsed ? allLinks(parsed) : [];
 
   log(`checking ${links.length} linked resources`);
-  const resources = await pool(links, (l) => digestResource(l.url, timeoutMs));
+  const resources = await pool(light ? links.slice(0, 40) : links, (l) => digestResource(l.url, timeoutMs));
 
   // Sitemap pages the file does not mention: digest a bounded sample so the lenses can judge importance.
   const listed = new Set(links.map((l) => l.url.replace(/\/$/, '').replace(/\.md$/, '').replace(/\.html$/, '')));
   // Engawa routes carry pathnames; the sitemap source flag tells us they came from sitemap.xml.
-  const sitemapUrls = inspect.routes.filter((r) => r.sources?.includes('sitemap') && !r.sensitivePathHint).map((r) => new URL(r.path, origin).href);
+  // No sitemap? Fall back to every same-origin route the crawl found, so a site without one still gets a case.
+  const publicRoutes = inspect.routes.filter((r) => !r.sensitivePathHint);
+  const fromSitemap = publicRoutes.filter((r) => r.sources?.includes('sitemap'));
+  const sitemapUrls = [...new Set((fromSitemap.length ? fromSitemap : publicRoutes).map((r) => new URL(r.path, origin).href))];
   const unlisted = sitemapUrls.filter((u) => !listed.has(u.replace(/\/$/, '').replace(/\.md$/, '').replace(/\.html$/, '')));
-  const unlistedSample = unlisted.slice(0, maxPages);
+  const unlistedSample = light ? [] : unlisted.slice(0, maxPages);
   log(`digesting ${unlistedSample.length} of ${unlisted.length} sitemap pages not in llms.txt`);
   const unlistedDigest = await pool(unlistedSample, async (u) => {
     const r = await fetchRaw(u, { timeoutMs });
     if (!r.ok || !isHtml(r.contentType)) return { url: u, status: r.status, title: '', description: '', h1: '' };
     const d = digestHtml(decodeUtf8(r.bytes).text);
-    return { url: u, status: r.status, title: d.title, description: d.description, h1: d.h1 };
+    // cheap twin probe so the drafter / coverage lens can prefer markdown where it already exists
+    let mdTwin = null;
+    for (const cand of [d.mdAlternate, ...markdownTwinCandidates(r.finalUrl)].filter(Boolean).map((x) => new URL(x, r.finalUrl).href)) {
+      const t = await fetchRaw(cand, { timeoutMs });
+      if (t.ok && !isHtml(t.contentType) && /^\s*#\s/.test(decodeUtf8(t.bytes).text)) { mdTwin = cand; break; }
+    }
+    return { url: u, status: r.status, title: d.title, description: d.description, h1: d.h1, mdTwin };
   });
 
   const home = await fetchRaw(origin + '/', { timeoutMs });

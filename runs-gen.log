@@ -1,0 +1,15 @@
+[2m› inspecting site with Engawa[0m
+[2m› fetching /llms.txt[0m
+[2m› checking 0 linked resources[0m
+[2m› digesting 0 of 0 sitemap pages not in llms.txt[0m
+
+[1mllms.txt doctor[0m  https://bukd.ch  case 1a7b907afb79
+deterministic score [1m85/100[0m  blocking 1  advisory 0  info 0
+  🟥 LLMS_MISSING               /llms.txt not served (HTTP 404)
+
+[1mno llms.txt found[0m [2mdrafting one from 0 crawled pages (sealed sonnet)[0m
+. ✓
+SITE: https://bukd.ch
+PAGES CONSIDERED: 1 / LINKED: 1 / LEFT OUT: 22 (crawl stats report 23 pages, but the case supplies no url/title/description rows for any of them beyond the origin's own html title and meta description — cannot draft truthful notes for pages whose content is unknown)
+
+[2mwritten: runs/bukd-generate[0m

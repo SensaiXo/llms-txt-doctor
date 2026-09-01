@@ -75,6 +75,14 @@ export function runChecks(c) {
   const md = links.length - nonMd;
   add('MARKDOWN_COVERAGE', 'INFO', `${md} of ${links.length} links point at markdown`);
 
+  // context budget per section, the llms_txt2ctx idea: an agent that loads a whole section gets this many bytes
+  const perSection = new Map();
+  links.forEach((l, i) => { const b = c.resources[i]?.bytes ?? 0; perSection.set(l.section, (perSection.get(l.section) ?? 0) + b); });
+  for (const [name, bytes] of perSection) {
+    if (bytes > 400_000) add('SECTION_TOO_HEAVY', 'ADVISORY', `section "${name}" links ${Math.round(bytes / 1024)} KB of content; an agent loading it whole blows a normal context budget, split it or move bulk to Optional`, [name]);
+  }
+  add('CONTEXT_BUDGET', 'INFO', [...perSection].map(([n, b]) => `${n}: ${Math.round(b / 1024)} KB`).join(', ') || 'no sections');
+
   // sitemap coverage (importance is a lens decision; here only the count)
   if (c.sitemap.unlisted) add('SITEMAP_PAGES_NOT_LISTED', 'INFO', `${c.sitemap.unlisted} of ${c.sitemap.total} sitemap URLs are not in llms.txt (that can be correct: llms.txt is curated, not a sitemap)`);
 

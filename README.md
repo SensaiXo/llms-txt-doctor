@@ -32,6 +32,7 @@ resource. Run the objective checks:
 | `DEAD_LINK` | linked resource not 2xx |
 | `HTML_WITHOUT_MD_TWIN`, `HTML_LINKED_MD_EXISTS` | HTML linked although a `.md` twin exists, or no twin at all |
 | `CLAIM_NOT_ON_PAGE` | a price in the note that the linked page does not contain |
+| `SECTION_TOO_HEAVY`, `CONTEXT_BUDGET` | bytes an agent loads per section (the `llms_txt2ctx` idea) |
 | `NO_DESCRIBEDBY_LINK`, `MARKDOWN_COVERAGE`, `SITEMAP_PAGES_NOT_LISTED` | discoverability, counts |
 
 The result is a **frozen case** (`case.md`, sha256 fingerprint): the site as observed, the file
@@ -59,6 +60,24 @@ line of reasoning per section and per moved link.
 Hard rule for the proposal: it may only link URLs that appear in the case. Where the case does not
 give enough to write a truthful note, the note says `(verify: …)` instead of inventing.
 
+**Agent test (measured, not judged).** Borrowed from mcpdoc's two-move agent (read llms.txt,
+fetch a link). A sealed question writer sees the site and writes the 10 questions its audience
+asks. A sealed agent sees ONLY the llms.txt, picks up to 2 links per question, we fetch them, it
+answers or says CANNOT ANSWER. A sealed grader scores each answer CORRECT / WRONG / DECLINED
+against the page that holds the fact and the page the agent cited. Output: `8/10 correct, 1 wrong,
+1 declined`. WRONG is the number that matters: a file that makes agents invent facts is worse than
+one that makes them say "I don't know". The result is appended to the case so the four reviewers
+can build on it.
+
+**Generate mode.** Site has no llms.txt? The same crawl feeds a sealed drafter that writes a
+first one from the page titles and descriptions, with `(verify: …)` wherever it lacks a fact.
+Every URL comes from the crawl; nothing is invented.
+
+**Corpus benchmark.** `bench/corpus.json` holds 2,650 real llms.txt URLs with category tags
+(from llms-txt-hub). `node src/bench.mjs --n 300` runs layer 1 over a stratified sample, no AI,
+and `node src/bench-summary.mjs` prints the score distribution, per-category medians, how common
+each finding is, and what the top-decile files have in common. That is what calibrates the weights.
+
 ## Requirements
 
 - Node 22+ (Engawa itself asks for 24; it loads fine on 22, install with `--ignore-engines`)
@@ -68,7 +87,7 @@ give enough to write a truthful note, the note says `(verify: …)` instead of i
 ## Options
 
 ```
-llms-txt-doctor <url> [--out dir] [--model opus|sonnet] [--no-lenses] [--max-pages n] [--json]
+llms-txt-doctor <url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--json]
 ```
 
 ## What this is not

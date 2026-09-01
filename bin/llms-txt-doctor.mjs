@@ -5,12 +5,13 @@ import { join } from 'node:path';
 import { crawl } from '../src/crawl.mjs';
 import { runChecks, score } from '../src/checks.mjs';
 import { buildCase } from '../src/case.mjs';
-import { runLenses, LENSES } from '../src/lenses.mjs';
+import { runLenses, runGenerate, LENSES } from '../src/lenses.mjs';
+import { runQa, formatQa } from '../src/qa.mjs';
 
 const args = process.argv.slice(2);
 const url = args.find((a) => !a.startsWith('--'));
 const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
-if (!url) { console.error('usage: llms-txt-doctor <url> [--out dir] [--model opus|sonnet] [--no-lenses] [--max-pages n] [--json]'); process.exit(1); }
+if (!url) { console.error('usage: llms-txt-doctor <url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--json]'); process.exit(1); }
 const model = opt('--model', 'opus');
 const maxPages = Number(opt('--max-pages', 60));
 const noLenses = args.includes('--no-lenses');
@@ -35,6 +36,35 @@ console.log(`deterministic score ${BOLD}${detScore}/100${RESET}  blocking ${bySe
 for (const f of findings.filter((f) => f.severity !== 'INFO')) console.log(`  ${f.severity === 'BLOCKING' ? '🟥' : '🟨'} ${f.id.padEnd(26)} ${f.message}`);
 for (const f of bySev('INFO')) console.log(`  ${DIM}·  ${f.id.padEnd(26)} ${f.message}${RESET}`);
 
+// ---- agent Q&A test (measured): sealed model, only llms.txt + fetch -------------------------
+let qa = null;
+let caseForLenses = frozen.text;
+if (!args.includes('--no-qa') && c.llms.parsed) {
+  const qaModel = opt('--qa-model', 'sonnet');
+  console.log(`\n${BOLD}agent test${RESET} ${DIM}(sealed ${qaModel}, only llms.txt + up to 2 fetches per question)${RESET}`);
+  try {
+    qa = await runQa(c, { model: qaModel, onStep: (label, done) => process.stdout.write(done ? ` ✓\n` : `  ${label}`) });
+    const s = qa.summary;
+    console.log(`  ${BOLD}${s.correct}/${s.total} correct${RESET}, ${s.wrong ? '🟥 ' : ''}${s.wrong} wrong, ${s.declined} declined`);
+    for (const it of qa.items.filter((x) => x.grade !== 'CORRECT')) console.log(`  ${it.grade === 'WRONG' ? '🟥' : '·'} ${it.grade.padEnd(8)} ${it.question}`);
+    const qaText = formatQa(qa);
+    writeFileSync(join(outDir, 'qa.md'), qaText);
+    caseForLenses += '\n' + qaText;
+  } catch (e) {
+    console.log(`  agent test failed: ${e.message}`);
+  }
+}
+
+// ---- generate mode: no llms.txt on the site, draft one from the crawl ----------------------
+let gen = null;
+if (!noLenses && !c.llms.parsed) {
+  console.log(`\n${BOLD}no llms.txt found${RESET} ${DIM}drafting one from ${c.sitemap.unlistedDigest.length} crawled pages (sealed ${model})${RESET}`);
+  gen = await runGenerate(frozen.text, { model, onProgress: (n, done) => process.stdout.write(done ? ' ✓\n' : '.') });
+  writeFileSync(join(outDir, 'generate.md'), gen.text);
+  if (gen.proposed) writeFileSync(join(outDir, 'llms.proposed.txt'), gen.proposed.trimEnd() + '\n');
+  console.log(gen.text.split('```')[0].trim());
+}
+
 let lens = null;
 if (!noLenses && c.llms.parsed) {
   // ---- layer 2: four blind lenses + synthesiser -----------------------------------------
@@ -50,7 +80,7 @@ if (!noLenses && c.llms.parsed) {
   };
   render();
   const tick = setInterval(render, 150);
-  lens = await runLenses(frozen.text, { model, onProgress: (k, n, done, err) => { state[k].chars = n; state[k].done = done; state[k].err = err ?? null; } });
+  lens = await runLenses(caseForLenses, { model, onProgress: (k, n, done, err) => { state[k].chars = n; state[k].done = done; state[k].err = err ?? null; } });
   clearInterval(tick); render();
   for (const r of lens.reports) writeFileSync(join(outDir, `${r.key}.md`), r.text);
   writeFileSync(join(outDir, 'synthesis.md'), lens.synthesis);
@@ -66,6 +96,11 @@ const R = [];
 R.push(`# llms.txt audit: ${c.origin}`, '', `Run ${stamp}, case ${frozen.fingerprint}, model ${noLenses ? 'none' : model}.`, '');
 R.push(`## Deterministic score: ${detScore}/100`, '');
 for (const f of findings) R.push(`- **${f.severity}** \`${f.id}\`: ${f.message}${f.evidence?.length ? '  \n  ' + f.evidence.map((e) => `\`${e}\``).join(', ') : ''}`);
+if (qa) R.push('', formatQa(qa));
+if (gen) {
+  R.push('', '## Draft llms.txt (site had none)', '', gen.text.replace(/```markdown[\s\S]*?```/, '(draft: see below)'), '');
+  if (gen.proposed) R.push('```markdown', gen.proposed.trimEnd(), '```', '');
+}
 if (lens) {
   R.push('', `## Verdict: ${lens.verdict} (score ${lens.score ?? '?'}/100)`, '', lens.synthesis.replace(/```markdown[\s\S]*?```/, '(proposed file: see llms.proposed.txt below)'), '');
   if (lens.proposed) R.push('## Proposed llms.txt', '', '```markdown', lens.proposed.trimEnd(), '```', '');

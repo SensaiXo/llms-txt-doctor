@@ -1,3 +1,5 @@
 node_modules/
 runs/
 runs-full.log
+bench/results*.jsonl
+bench/smoke.jsonl

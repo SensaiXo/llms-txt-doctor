@@ -31,9 +31,9 @@ export function buildCase(c, findings) {
     L.push(`- ${l.section} | ${l.title} | ${l.url} | ${r.status} | ${r.kind} | ${r.mdTwin ?? (r.kind === 'html' ? 'NONE' : 'n/a')} | ${cap(h.title, 120)} | ${cap(h.description, 200)}`);
   });
   L.push('');
-  L.push('## Sitemap pages NOT in llms.txt (title | description)');
+  L.push('## Sitemap pages NOT in llms.txt (url | title | description | markdown twin)');
   if (!c.sitemap.unlistedDigest.length) L.push('- none');
-  for (const u of c.sitemap.unlistedDigest) L.push(`- ${u.url} | ${cap(u.title, 120)} | ${cap(u.description, 200)}`);
+  for (const u of c.sitemap.unlistedDigest) L.push(`- ${u.url} | ${cap(u.title, 120)} | ${cap(u.description, 200)} | ${u.mdTwin ?? 'none'}`);
   if (c.sitemap.unlistedRest.length) L.push(`- …and ${c.sitemap.unlistedRest.length} more: ${c.sitemap.unlistedRest.slice(0, 40).join(' ')}`);
   L.push('');
   L.push('## Deterministic findings (already established, do not re-derive; build on them)');
