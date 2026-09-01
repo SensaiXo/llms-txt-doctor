@@ -16,5 +16,7 @@ Two layers, strictly separated:
    frozen case. A synthesiser merges them into: score, convergent findings, verdict
    (PUBLISH / FIX / REWRITE), a proposed llms.txt with inferred sections, and reasoning.
 
-Rules: never invent pages (proposed file may only link URLs present in the case);
-reviewers never see each other; a run is reproducible from `case.json` alone.
+Rules: never invent pages (proposed file may only link URLs present in the case,
+code-enforced by src/provenance.mjs since 2026-09-02); reviewers never see each other;
+the inputs of a run are fully preserved in `case.json`; layer 1 replays identically, the
+reviewer layer varies (see variance caveat).

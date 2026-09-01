@@ -23,7 +23,7 @@ four reviewer reports.
 **Layer 1: deterministic (no AI).** Crawl the site with Engawa's `runInspect` (sitemap, routes,
 locales). Fetch `/llms.txt` as raw bytes. Parse it against the
 [llmstxt.org v2](https://llmstxt.org/) shape (a port of the reference parser). Fetch every linked
-resource. Run the objective checks:
+resource. Run 30 rule checks (count enforced by test, see `test/checks.test.mjs`):
 
 | id | what it catches |
 |---|---|
@@ -60,8 +60,9 @@ a verdict (`PUBLISH` / `FIX` / `REWRITE`), a **proposed `llms.txt`** with inferr
 (Core Services, Industries, Guides, Company, Optional, whatever the site actually has), and one
 line of reasoning per section and per moved link.
 
-Hard rule for the proposal: it may only link URLs that appear in the case. Where the case does not
-give enough to write a truthful note, the note says `(verify: …)` instead of inventing.
+Enforced rule: a code validator (`src/provenance.mjs`) checks every URL in the proposed file
+against the case; violations are printed and written to PROVENANCE-VIOLATIONS.txt. Where the case
+does not give enough to write a truthful note, the note says `(verify: …)` instead of inventing.
 
 **Agent test (measured, not judged).** Borrowed from mcpdoc's two-move agent (read llms.txt,
 fetch a link). A sealed question writer sees the site and writes the 10 questions its audience
@@ -106,9 +107,16 @@ is-agent-ready <host or url> [--out dir] [--model opus|sonnet] [--qa-model sonne
 - Not proof that any agent reads your file. Publishing `llms.txt` guarantees nothing about
   discovery; Engawa's docs are right about that.
 - Not a replacement for reading the proposal. Four reviewers agreeing is convergence, not truth.
-  Run it twice before acting on a verdict; the lens layer has run-to-run variance.
+  Run it twice before acting on a verdict; the lens layer has run-to-run variance. The CLI prints
+  a provisional-run notice for the first run of a file version.
 - Not a crawler of the whole site. `--max-pages` bounds the sitemap sample; the file is curated,
   so a page missing from it is only a finding when a lens argues it matters.
+
+## Security note
+
+Layer 1 fetches arbitrary web content from audited sites, as any crawler does (including Engawa's
+own `inspect`). Run it where a malicious response cannot hurt you; the bench corpus (`bench/`) is
+third-party, user-submitted input and should be treated the same way.
 
 ## Relationship to Engawa
 

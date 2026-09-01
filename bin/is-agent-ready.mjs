@@ -7,7 +7,7 @@ import { runChecks, score } from '../src/checks.mjs';
 import { buildCase } from '../src/case.mjs';
 import { runLenses, runGenerate, LENSES } from '../src/lenses.mjs';
 import { runQa, formatQa } from '../src/qa.mjs';
-import { ledgerRow, fileRun } from '../src/ledger.mjs';
+import { ledgerRow, fileRun, readRuns } from '../src/ledger.mjs';
 import { normalizeTarget } from '../src/target.mjs';
 import { claudeAvailable } from '../src/claude-available.mjs';
 
@@ -68,7 +68,14 @@ if (!noLenses && !c.llms.parsed) {
   console.log(`\n${BOLD}no llms.txt found${RESET} ${DIM}drafting one from ${c.sitemap.unlistedDigest.length} crawled pages (sealed ${model})${RESET}`);
   gen = await runGenerate(frozen.text, { model, onProgress: (n, done) => process.stdout.write(done ? ' ✓\n' : '.') });
   writeFileSync(join(outDir, 'generate.md'), gen.text);
-  if (gen.proposed) writeFileSync(join(outDir, 'llms.proposed.txt'), gen.proposed.trimEnd() + '\n');
+  if (gen.proposed) {
+    writeFileSync(join(outDir, 'llms.proposed.txt'), gen.proposed.trimEnd() + '\n');
+    if (gen.provenance && !gen.provenance.ok) {
+      console.log(`\x1b[31mPROVENANCE VIOLATION: ${gen.provenance.violations.length} URL(s) in the proposed file do not appear in the case:\x1b[0m`);
+      for (const u of gen.provenance.violations) console.log(`  \x1b[31m${u}\x1b[0m`);
+      writeFileSync(join(outDir, 'PROVENANCE-VIOLATIONS.txt'), gen.provenance.violations.join('\n') + '\n');
+    }
+  }
   console.log(gen.text.split('```')[0].trim());
 }
 
@@ -91,9 +98,24 @@ if (!noLenses && c.llms.parsed) {
   clearInterval(tick); render();
   for (const r of lens.reports) writeFileSync(join(outDir, `${r.key}.md`), r.text);
   writeFileSync(join(outDir, 'synthesis.md'), lens.synthesis);
-  if (lens.proposed) writeFileSync(join(outDir, 'llms.proposed.txt'), lens.proposed.trimEnd() + '\n');
+  if (lens.proposed) {
+    writeFileSync(join(outDir, 'llms.proposed.txt'), lens.proposed.trimEnd() + '\n');
+    if (lens.provenance && !lens.provenance.ok) {
+      console.log(`\x1b[31mPROVENANCE VIOLATION: ${lens.provenance.violations.length} URL(s) in the proposed file do not appear in the case:\x1b[0m`);
+      for (const u of lens.provenance.violations) console.log(`  \x1b[31m${u}\x1b[0m`);
+      writeFileSync(join(outDir, 'PROVENANCE-VIOLATIONS.txt'), lens.provenance.violations.join('\n') + '\n');
+    }
+  }
   const face = { PUBLISH: '🟢', FIX: '🟠', REWRITE: '🔴' }[lens.verdict] ?? '❓';
   console.log(`\n${face} ${BOLD}VERDICT: ${lens.verdict}${RESET}  score ${lens.score ?? '?'}/100  (${lens.reports.filter((r) => r.verdict === 'BLOCKING').length}/4 reviewers BLOCKING)`);
+  const priorReportsDir = opt('--reports', null);
+  let runN = '1 (unfiled)';
+  if (priorReportsDir) {
+    const siteDir = join(priorReportsDir, 'sites', host);
+    const priorRuns = readRuns(siteDir).filter((r) => r.fingerprint === frozen.fingerprint).length;
+    runN = priorRuns + 1;
+  }
+  console.log(`${DIM}note: reviewer score and agent test vary run to run; findings that recur across runs are the signal. This is run ${runN} for this file version.${RESET}`);
   const fixList = lens.synthesis.match(/FIX LIST:[\s\S]*?(?=\n```|\nREASONING:)/)?.[0];
   if (fixList) console.log('\n' + fixList.trim());
 }

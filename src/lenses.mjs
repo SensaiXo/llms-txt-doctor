@@ -7,6 +7,7 @@ import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { checkProvenance } from './provenance.mjs';
 
 const PROMPTS = join(dirname(fileURLToPath(import.meta.url)), '..', 'prompts');
 
@@ -83,7 +84,8 @@ export async function runLenses(caseText, { model = 'opus', onProgress = () => {
     const verdict = synthesis.match(/VERDICT:\s*(PUBLISH|FIX|REWRITE)/)?.[1] ?? 'UNKNOWN';
     const scoreM = synthesis.match(/SCORE:\s*(\d{1,3})/);
     const proposed = synthesis.match(/```(?:markdown|text|md)?\s*\n(# [\s\S]*?)\n```/)?.[1] ?? null;
-    return { reports, synthesis, verdict, score: scoreM ? Number(scoreM[1]) : null, proposed };
+    const provenance = proposed ? checkProvenance(proposed, caseText) : null;
+    return { reports, synthesis, verdict, score: scoreM ? Number(scoreM[1]) : null, proposed, provenance };
   } finally {
     rmSync(sandbox, { recursive: true, force: true });
   }
@@ -99,7 +101,8 @@ export async function runGenerate(caseText, { model = 'opus', onProgress = () =>
     const text = await runIsolated(sandbox, model, system, user, (n) => onProgress(n, false));
     onProgress(text.length, true);
     const proposed = text.match(/```(?:markdown|text|md)?\s*\n(# [\s\S]*?)\n```/)?.[1] ?? null;
-    return { text, proposed };
+    const provenance = proposed ? checkProvenance(proposed, caseText) : null;
+    return { text, proposed, provenance };
   } finally {
     rmSync(sandbox, { recursive: true, force: true });
   }

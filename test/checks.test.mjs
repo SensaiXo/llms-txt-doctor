@@ -1,8 +1,22 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { runChecks, score } from '../src/checks.mjs';
 import { parseLlmsTxt, allLinks } from '../src/parse.mjs';
 import { markdownTwinCandidates } from '../src/crawl.mjs';
+
+// Docs quote an exact check count (README.md, agent-readiness-reports/METHOD.md). This keeps
+// that number honest: add or remove a finding id in checks.mjs and this test breaks until the
+// docs are updated too.
+const CHECKS_SRC = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'checks.mjs'), 'utf8');
+const CHECK_COUNT = 30;
+
+test(`checks.mjs emits exactly ${CHECK_COUNT} distinct finding ids`, () => {
+  const ids = new Set([...CHECKS_SRC.matchAll(/add\('([A-Z_]+)'/g)].map((m) => m[1]));
+  assert.equal(ids.size, CHECK_COUNT, `expected ${CHECK_COUNT} distinct check ids, found ${ids.size}: update README.md and METHOD.md if this changed`);
+});
 
 function mkCase(raw, resources = [], extra = {}) {
   const parsed = parseLlmsTxt(raw);
