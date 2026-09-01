@@ -1,0 +1,64 @@
+# schnellstart.ai
+
+> KI-Beratung for Swiss SMEs (KMU) by Lukas Huber (CEO) and Florian Witschi (CTO), Ringstrasse 37, 8500 Frauenfeld, Thurgau, CH; VAT CHE-163.272.208; info@schnellstart.ai; market Switzerland; founded 2024.
+
+Offer, CHF excl. VAT: fixed-price KI-Standortbestimmung (5-Säulen-Readiness-Audit, use-case prioritisation, ROI-Fahrplan) after a free 15-minute Erstgespräch, team workshops at CHF 2'200 half day and CHF 3'800 full day, consulting from CHF 450/h, Enterprise subscriptions, and implementation projects (n8n, Make, Zapier) quoted after the Standortbestimmung.
+Language: German-first (de, de-CH) with published English pages for booking, the Copilot guide and the Blueprint (en, en-CH).
+Tools are chosen per case; open-source where possible (n8n, self-hosted), no vendor lock-in; Swiss business integrations Bexio, Swiss21, Sage, Abacus.
+Swiss hosting (Infomaniak, Geneva) is offered where a case calls for it, while the industry pages state Swiss-hosted, FADP-compliant delivery (verify: which of the two applies by default for healthcare, legal and Treuhand).
+Typical trigger situations: Microsoft 365 Copilot has appeared in a tenant and nobody has decided what it may read; staff paste company data into private ChatGPT accounts with no rule; several automation ideas exist with no way to rank them; a repetitive back-office process (invoices, receipts, quotes, scheduling, reporting) eats hours every week.
+LinkedIn: [schnellstart-ai](https://www.linkedin.com/company/schnellstart-ai), [Lukas Huber](https://www.linkedin.com/in/schnellstart)
+
+## Angebot, Preise & Einstieg
+- [KI-Beratung für Schweizer KMU](https://schnellstart.ai/de/ki-beratung.md): hub for the consulting offer, from the free 15-minute call to the fixed-price Standortbestimmung and a team workshop from CHF 2'200
+- [KI-Standortbestimmung](https://schnellstart.ai/de/services/standortbestimmung.md): the guided, paid engagement with a 5-Säulen-Readiness-Audit, use-case prioritisation and ROI-Fahrplan, at a fixed price after the free call
+- [KI-Readiness Check](https://schnellstart.ai/de/check): free 15-question self-check across the same 5 pillars, giving a type and the biggest lever — not the paid Standortbestimmung
+- [KI-Workshops für Teams](https://schnellstart.ai/de/services/training.md): fixed prices of CHF 2'200 half day and CHF 3'800 full day, hands-on exercises on the team's real processes instead of rigid demos
+- [Preise](https://schnellstart.ai/de/pricing.md): consulting from CHF 450/h, workshops from CHF 2'200, Enterprise subscriptions, CHF excl. VAT and no hidden costs
+- [Microsoft 365 & Copilot Service](https://schnellstart.ai/de/microsoft.md): activating Copilot safely by cleaning up SharePoint permissions, configuring Purview and training the team on real workflows
+- [Free 15-minute Erstgespräch (Klartext-Call)](https://schnellstart.ai/de/buchen): non-binding online intro call for Swiss SMEs and the entry point for every service
+- [Book the same call in English](https://schnellstart.ai/en/book): free 15-minute intro call for Swiss SMEs, online and non-binding
+
+## Branchen
+- [Treuhand & Buchhaltung](https://schnellstart.ai/de/industries/accounting-finance): Bexio integration, automated receipt processing and client portals for fiduciaries and finance providers, Swiss-hosted
+- [Bau & Handwerk](https://schnellstart.ai/de/industries/construction): automated quotes, construction progress and billing for Swiss building firms, described as FADP-compliant
+- [Gesundheitswesen](https://schnellstart.ai/de/industries/healthcare): patient portals, appointment management and EPD integration for practices, Spitex and clinics, described as FADP-compliant and Swiss-hosted
+- [Recht & Anwaltskanzleien](https://schnellstart.ai/de/industries/legal): automated document analysis, client administration and FADP-compliant communication for law firms and legal departments, Swiss-hosted
+- [Industrie & Fertigung](https://schnellstart.ai/de/industries/manufacturing): ERP integration, digital project management and process optimisation for producing SMEs, Swiss-hosted
+- [Handel & E-Commerce](https://schnellstart.ai/de/industries/retail-ecommerce): e-commerce integration with Shopify, WooCommerce and Bexio, stock automation and customer analytics for Swiss retailers
+
+## Workshops & Kurse
+- [Workshops hub](https://schnellstart.ai/de/workshops.md): all workshops and courses for Swiss SMEs on Microsoft Copilot, ChatGPT, Treuhand and Claude Code, shown live and vendor-neutral
+- [Microsoft 365 Copilot: sicherer Einstieg](https://schnellstart.ai/de/copilot-workshop): free 30-minute online session on what Copilot can do, where it helps and how to start without risk
+- [KI im Treuhandbüro: sicher & einfach](https://schnellstart.ai/de/workshop/ki-treuhandbuero): 30-minute session on analysing client documents with Swiss AI, without data sharing and without IT knowledge
+- [Claude Code für KMU](https://schnellstart.ai/de/workshop/claude-code-business): 60-minute hands-on session on delegating research, reports and analyses to Claude Code in a DSG-compliant way
+- [KI-Tool-Kompass](https://schnellstart.ai/de/workshop/ki-tool-kompass): free live check with the 5 questions before any AI tool purchase, 4 red flags and a 4-week pilot framework plus scorecard PDF
+
+## Ergebnisse & Fallstudien
+- [Erfolgsgeschichten](https://schnellstart.ai/de/erfolgsgeschichten): hub of client case studies with KPIs from Swiss companies that automated with AI
+- [Plaschy Treuhand](https://schnellstart.ai/de/erfolgsgeschichten/plaschy-treuhand): receipt processing automated, over 20 hours per week returned to advisory work
+- [Hähni Bürodienst](https://schnellstart.ai/de/erfolgsgeschichten/haehni-buero): 10–15 hours per week saved with a clean document pipeline from client to bookkeeping
+- [Cichowdt Tattoo](https://schnellstart.ai/de/erfolgsgeschichten/cichowdt-tattoo): bookings fully automated, zero missed enquiries and 85% fewer no-shows
+- [Gentlemen's Barber Shop](https://schnellstart.ai/de/erfolgsgeschichten/gentlemens-barbershop): 2+ hours a day gained and automatic lead generation, from near failure to number 1 in Frauenfeld
+- [Workshop-Fallstudien](https://schnellstart.ai/de/case-studies/workshops): field reports from the AI team workshops, including HR Luzern, Pro Senectute and OdA Hauswirtschaft Ostschweiz
+
+## Wissen & Orientierung
+- [FAQ: 25 Fragen zu KI-Beratung und Workshops](https://schnellstart.ai/de/faq.md): prices, process, tools, data protection and workshops in German, with the canonical HTML page at /de/faq
+- [Copilot für Microsoft 365 einführen (DE)](https://schnellstart.ai/de/copilot-guide.md): prerequisites, a 6-step rollout and 30+ prompts for Teams, Outlook, Word and Excel
+- [Microsoft 365 Copilot rollout guide (EN)](https://schnellstart.ai/en/copilot-guide): the same Copilot guide written for Swiss SMEs in English
+- [KI-Beratung Schweiz: Vergleich und Auswahl](https://schnellstart.ai/de/ki-beratung-schweiz-vergleich.md): honest comparison of large consultancies, IT consultancies, AI agencies and implementation partners, and which suits an SME
+- [KI-Beratung in Frauenfeld und Thurgau](https://schnellstart.ai/de/ki-beratung-frauenfeld.md): AI consulting and automation for SMEs in Frauenfeld and canton Thurgau, remote or on site by arrangement, delivered by the founders
+- [Blog](https://schnellstart.ai/de/blog): index of practice guides, software comparisons (ChatGPT vs Claude, n8n costs, tool comparisons) and case studies for Swiss SMEs
+
+## Unternehmen
+- [Homepage in markdown](https://schnellstart.ai/de.md): offer, team and proof on one page
+- [Über uns](https://schnellstart.ai/de/about): the founders' Treuhand and engineering background and how they advise and implement, FADP-compliant
+- [Kontakt](https://schnellstart.ai/de/contact): contact channels and free first consultation, with a stated reply within four hours
+- [Datenschutz](https://schnellstart.ai/de/datenschutz): privacy statement for the Swiss AI automation services of schnellstart.ai
+
+## Optional
+- [AI Website Blueprint (DE)](https://schnellstart.ai/de/bauplan): public playbook covering positioning, mockups, a React/Vite stack, SEO schema and an agent workflow
+- [AI Website Blueprint (EN)](https://schnellstart.ai/en/blueprint): the same website blueprint in English
+- [4 blinde KI-Prüfer](https://schnellstart.ai/de/due-diligence): four independent AI reviewers try to disprove a business idea, free on GitHub or written up together
+- [Blog RSS (DE)](https://schnellstart.ai/blog/rss.xml): (verify: feed cadence and topics; the case shows HTTP 200 with no title or description)
+- [Blog RSS (EN)](https://schnellstart.ai/blog/rss-en.xml): (verify: feed cadence and topics; the case shows HTTP 200 with no title or description)
