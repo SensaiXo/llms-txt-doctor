@@ -5,4 +5,5 @@ useDefault = true
 
 [allowlist]
 description = "public site tokens quoted from crawled HTML"
-regexes = ['''data-cf-beacon=.{0,40}token''', '''cloudflareinsights''']
+regexTarget = "line"
+regexes = ['''data-cf-beacon''', '''cloudflareinsights''']
