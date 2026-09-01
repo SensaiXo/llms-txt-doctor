@@ -1,4 +1,4 @@
-# llms-txt-doctor
+# is-agent-ready
 
 **Audit a website's `llms.txt` against the spec and against the site's real structure, then get a
 corrected file with the reasoning behind it.**
@@ -9,7 +9,7 @@ one flat `## Pages` list, do the claims agree with the pages, are the important 
 links point at markdown or at HTML nobody should make an agent parse? This tool answers that.
 
 ```
-npx llms-txt-doctor https://example.ch
+npx is-agent-ready schnellstart.ai
 ```
 
 Output in `runs/<host>-<stamp>/`: `report.md`, `llms.proposed.txt`, the frozen `case.md`, and the
@@ -89,12 +89,13 @@ the flag existed.
 
 - Node 22+ (Engawa itself asks for 24; it loads fine on 22, install with `--ignore-engines`)
 - [Claude Code](https://claude.com/claude-code) on PATH and logged in, for layer 2 only.
-  `--no-lenses` runs layer 1 alone with no AI at all.
+  `--no-lenses` runs layer 1 alone with no AI at all. Without Claude Code on PATH the command
+  runs the rule checks only and says so.
 
 ## Options
 
 ```
-llms-txt-doctor <url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--reports dir] [--json]
+is-agent-ready <host or url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--reports dir] [--json]
 ```
 
 ## What this is not

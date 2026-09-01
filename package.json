@@ -1,10 +1,12 @@
 {
-  "name": "llms-txt-doctor",
+  "name": "is-agent-ready",
   "version": "0.1.0",
   "description": "Audit a site's llms.txt against the llmstxt.org v2 spec and the site's real structure, then propose a corrected file with the reasoning.",
   "license": "MIT",
   "type": "module",
-  "bin": { "llms-txt-doctor": "./bin/llms-txt-doctor.mjs" },
+  "bin": { "is-agent-ready": "./bin/is-agent-ready.mjs" },
+  "files": ["bin", "src", "prompts", "README.md", "LICENSE"],
+  "repository": { "type": "git", "url": "git+https://github.com/SensaiXo/llms-txt-doctor.git" },
   "scripts": { "test": "node --test test/*.test.mjs" },
   "engines": { "node": ">=22" },
   "dependencies": { "@thierry-gilgen-ict/engawa-cli": "0.1.0" }

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// llms-txt-doctor <url> [--out dir] [--model opus|sonnet] [--no-lenses] [--max-pages n] [--json]
+// is-agent-ready <url> [--out dir] [--model opus|sonnet] [--no-lenses] [--max-pages n] [--json]
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { crawl } from '../src/crawl.mjs';
@@ -8,14 +8,20 @@ import { buildCase } from '../src/case.mjs';
 import { runLenses, runGenerate, LENSES } from '../src/lenses.mjs';
 import { runQa, formatQa } from '../src/qa.mjs';
 import { ledgerRow, fileRun } from '../src/ledger.mjs';
+import { normalizeTarget } from '../src/target.mjs';
+import { claudeAvailable } from '../src/claude-available.mjs';
 
 const args = process.argv.slice(2);
-const url = args.find((a) => !a.startsWith('--'));
 const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
-if (!url) { console.error('usage: llms-txt-doctor <url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--reports dir] [--json]'); process.exit(1); }
+const rawTarget = args.find((a) => !a.startsWith('--'));
+if (!rawTarget) { console.error('usage: is-agent-ready <host or url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--reports dir] [--json]'); process.exit(1); }
+let url;
+try { url = normalizeTarget(rawTarget); } catch (e) { console.error(e.message); process.exit(1); }
+const hasClaude = claudeAvailable();
+if (!hasClaude && !args.includes('--no-lenses')) console.error('claude CLI not found on PATH: running the rule checks only (install Claude Code for the agent test and the four reviewers)');
 const model = opt('--model', 'opus');
 const maxPages = Number(opt('--max-pages', 60));
-const noLenses = args.includes('--no-lenses');
+const noLenses = args.includes('--no-lenses') || !hasClaude;
 const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 const host = new URL(url).hostname;
 const outDir = opt('--out', join(process.cwd(), 'runs', `${host}-${stamp}`));
@@ -40,7 +46,7 @@ for (const f of bySev('INFO')) console.log(`  ${DIM}·  ${f.id.padEnd(26)} ${f.m
 // ---- agent Q&A test (measured): sealed model, only llms.txt + fetch -------------------------
 let qa = null;
 let caseForLenses = frozen.text;
-if (!args.includes('--no-qa') && c.llms.parsed) {
+if (!args.includes('--no-qa') && hasClaude && c.llms.parsed) {
   const qaModel = opt('--qa-model', 'sonnet');
   console.log(`\n${BOLD}agent test${RESET} ${DIM}(sealed ${qaModel}, only llms.txt + up to 2 fetches per question)${RESET}`);
   try {

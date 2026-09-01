@@ -1,4 +1,4 @@
-# llms-txt-doctor: design (2026-09-01)
+# is-agent-ready: design (2026-09-01)
 
 Goal: close the gap between "Engawa can publish an llms.txt" and "help me build the right one".
 Input: a public site URL. Output: audit report + a proposed corrected llms.txt + reasoning.

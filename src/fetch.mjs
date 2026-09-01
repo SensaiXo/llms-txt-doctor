@@ -1,5 +1,5 @@
 // Small bounded fetch helper. Raw bytes are kept so encoding can be judged before decoding.
-export const USER_AGENT = 'llms-txt-doctor/0.1 (+https://github.com/SensaiXo/llms-txt-doctor)';
+export const USER_AGENT = 'is-agent-ready/0.1 (+https://github.com/SensaiXo/llms-txt-doctor)';
 const MAX_BYTES = 2_000_000;
 
 export async function fetchRaw(url, { timeoutMs = 10_000, method = 'GET' } = {}) {
