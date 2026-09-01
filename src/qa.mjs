@@ -79,15 +79,15 @@ export async function runQa(c, { model = 'sonnet', timeoutMs = 10_000, onStep = 
       const a = answers.find((x) => x.i === i) ?? { answer: 'CANNOT ANSWER', source: null };
       items.push({ i, question: questions[i].q, expectUrl: questions[i].expectUrl, expectFact: questions[i].expectFact, expectText: exp.text, answer: a.answer, source: a.source, fetched: (picks.find((p) => p.i === i)?.urls ?? []) });
     }
-    // 2026-09-01 designtakt run: the grader marked a correct answer WRONG because the cited page was
-    // cut at 5000 chars before the facts block. Give the grader the full capped page (PAGE_CAP).
-    // The grader sees the expected page AND the page the assistant cited: a fact that is true on
-    // the cited page is not WRONG just because the question writer expected a different page.
-    for (const it of items) {
-      const src = it.source && /^https?:/.test(it.source) && (listed.has(it.source) || sameOrigin(it.source)) ? it.source : null;
-      it.sourceText = src ? (await fetchText(src, cache, timeoutMs)).text : '';
+    // The grader must see everything the assistant saw: the llms.txt itself (facts in the head
+    // and in link notes are legitimately "supported") and every page it fetched for the item,
+    // plus the page the question writer expected. 2026-09-01: four schnellstart answers were
+    // graded WRONG for facts that sat in the file or in the second fetched page.
+    const pageTexts = new Map();
+    for (const it of items) for (const u of it.fetched.slice(0, 2)) {
+      if (!pageTexts.has(u) && (listed.has(u) || sameOrigin(u))) pageTexts.set(u, (await fetchText(u, cache, timeoutMs)).text);
     }
-    const itemsText = items.map((it) => `### ${it.i}\nQ: ${it.question}\nExpected fact: ${it.expectFact}\nExpected page (${it.expectUrl}):\n${cap(it.expectText, PAGE_CAP) || '(page not fetchable)'}\nPage the assistant cited (${it.source ?? 'none'}):\n${cap(it.sourceText, PAGE_CAP) || '(none)'}\nAssistant answer: ${it.answer}`).join('\n\n');
+    const itemsText = buildGradeItems(items, c.llms.raw, pageTexts);
     const grades = parseJson(await ask('qa-grade.md', { ITEMS: itemsText }, 'grade'));
     for (const it of items) { const g = grades.find((x) => x.i === it.i); it.grade = g?.grade ?? 'UNGRADED'; it.why = g?.why ?? ''; }
     const n = (g) => items.filter((it) => it.grade === g).length;
@@ -103,4 +103,12 @@ export function formatQa(qa) {
   const L = [`## Agent test (measured, model ${qa.model})`, `With ONLY the llms.txt and up to 2 fetches per question, an agent answered ${s.correct}/${s.total} correctly, ${s.wrong} WRONG (invented or contradicted), ${s.declined} declined.`, ''];
   for (const it of qa.items) L.push(`- [${it.grade}] ${it.question}\n  answer: ${cap(it.answer, 300)}\n  fetched: ${it.fetched.join(', ') || 'nothing'}; expected: ${it.expectUrl}${it.why ? `\n  grader: ${it.why}` : ''}`);
   return L.join('\n') + '\n';
+}
+
+export function buildGradeItems(items, llmsRaw, pageTexts) {
+  const head = `llms.txt (the file the assistant was given):\n${llmsRaw.trim()}\n\n`;
+  return head + items.map((it) => {
+    const fetched = it.fetched.slice(0, 2).map((u) => `Fetched page (${u}):\n${cap(pageTexts.get(u) ?? '', PAGE_CAP) || '(not fetched)'}`).join('\n');
+    return `### ${it.i}\nQ: ${it.question}\nExpected fact: ${it.expectFact}\nExpected page (${it.expectUrl}):\n${cap(it.expectText, PAGE_CAP) || '(page not fetchable)'}\n${fetched}\nAssistant answer: ${it.answer}`;
+  }).join('\n\n');
 }
