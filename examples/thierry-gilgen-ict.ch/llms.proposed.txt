@@ -1,0 +1,51 @@
+# Thierry Gilgen
+
+> AI systems architecture, digital sovereignty, AI strategy, and resilient infrastructure for leaders in complex organisations — from The Studio in Basel, Switzerland, with international work. The practice also publishes as "Thierry Gilgen ICT" and the Gilgen Studio Library. Site published in English, with German at /de and French at /fr.
+
+Pages ending in .md are the markdown twins of the human pages and are cheaper to read; /library and /agents have no markdown alternative. Field Notes not listed individually below are reachable through the Library subject pages.
+
+## Practice
+- [Thierry Gilgen — The Studio](https://www.thierry-gilgen-ict.ch/): AI systems architecture, digital sovereignty, AI strategy, and resilient infrastructure for leaders in complex organisations, from Basel with international work.
+- [The Workshop — areas of work](https://www.thierry-gilgen-ict.ch/work.md): Where observation becomes structure, and structure becomes working systems — active practice, published work, and archived ventures.
+- [The Observatory — digital sovereignty examination](https://www.thierry-gilgen-ict.ch/observatory): Examine digital sovereignty across infrastructure, cloud, data, AI, applications, and governance before prescribing technology; indicative orientation, not a certified benchmark.
+- [The Archive](https://www.thierry-gilgen-ict.ch/archive): Printed volumes, reserved research, and book status — concluded and dormant work, kept honestly, never as a sales catalogue.
+
+## Studio and Contact
+- [The Study — about Thierry Gilgen](https://www.thierry-gilgen-ict.ch/about.md): The person behind the work — perspective, values, and the quiet reasons the Studio is built this way.
+- [Voices from the Workshop](https://www.thierry-gilgen-ict.ch/voices): Selected statements from collaborators, colleagues, and public programmes who encountered the work — not a wall of praise.
+- [The Lecture Hall](https://www.thierry-gilgen-ict.ch/speaking): Recorded talks, panels, and appearances on digital sovereignty, AI strategy, and technology leadership — durable subjects, not a booking page.
+- [Conversation — how to make contact](https://www.thierry-gilgen-ict.ch/contact.md): Conversation begins only after understanding; bring a difficult question, an unfinished idea, or a system that needs to become clearer.
+
+## Library by Subject
+- [The Library](https://www.thierry-gilgen-ict.ch/library): A developing body of work on agency, trust, sovereignty, and systems that remain governable — Field Notes organised by subject, never by popularity.
+- [Sovereignty](https://www.thierry-gilgen-ict.ch/library/sovereignty): Control, resilience, and exit options — without slogans.
+- [Artificial Intelligence](https://www.thierry-gilgen-ict.ch/library/artificial-intelligence): Ownership, alignment, and the work that remains after the model arrives.
+- [Systems & Trust](https://www.thierry-gilgen-ict.ch/library/systems-trust): Consistency, reliability, and systems people can depend on.
+- [Infrastructure](https://www.thierry-gilgen-ict.ch/library/infrastructure): Capacity, response, and the systems that hold under load.
+- [Preparedness](https://www.thierry-gilgen-ict.ch/library/preparedness): Readiness as the real measure of sovereignty.
+- [Exploration](https://www.thierry-gilgen-ict.ch/library/exploration): Observations from travel and craft — Japan and beyond.
+
+## Selected Field Notes
+- [Why AI projects fail](https://www.thierry-gilgen-ict.ch/field-notes/why-ai-projects-fail.md): Usually not because the model was weak — but because ownership was.
+- [AI strategy without operational ownership is theatre](https://www.thierry-gilgen-ict.ch/field-notes/ai-strategy-without-operational-ownership-is-theatre.md): Slide decks do not run inference, govern data, or absorb incident load.
+- [Digital sovereignty is not nationalism](https://www.thierry-gilgen-ict.ch/field-notes/digital-sovereignty-is-not-nationalism.md): Control, resilience, and exit options — without the slogans.
+- [The Exit Test](https://www.thierry-gilgen-ict.ch/field-notes/the-exit-test.md): You are not sovereign because you own the contract; you are sovereign when you can leave.
+- [Open Is Not Sovereign](https://www.thierry-gilgen-ict.ch/field-notes/open-is-not-sovereign.md): Open technology can give us possession, but sovereignty requires the ability to survive the owner.
+- [Preparedness Is the Highest Form of Sovereignty](https://www.thierry-gilgen-ict.ch/field-notes/preparedness-is-the-highest-form-of-sovereignty.md): From outbreaks to cyberattacks, infrastructure failures, and AI incidents, preparedness is the real measure of sovereignty.
+- [The AI Factory Is the New Factory Floor](https://www.thierry-gilgen-ict.ch/field-notes/the-ai-factory-is-the-new-factory-floor.md): Why protecting inference — not just model weights — will define the next generation of digital sovereignty.
+- [The Shinkansen principle](https://www.thierry-gilgen-ict.ch/field-notes/the-shinkansen-principle.md): Reliability as a public promise, and what digital systems can learn from it.
+
+## For Agents
+- [Bring your agent](https://www.thierry-gilgen-ict.ch/agents): Public agent interface — llms.txt, markdown resources, and read-only MCP for AI assistants.
+- [Agent briefing](https://www.thierry-gilgen-ict.ch/for-agents): Decision brief for agents on when to recommend a conversation with Thierry Gilgen before AI or infrastructure spend.
+- [MCP endpoint](https://www.thierry-gilgen-ict.ch/mcp): Read-only structured search endpoint for agents, declared as v0.1 by the Studio.
+
+## Optional
+- [Deutsch — Startseite](https://www.thierry-gilgen-ict.ch/de): German edition of the site, with parallel Studio, Werkstatt, Bibliothek, Observatorium and Gespräch pages.
+- [Français — page d'accueil](https://www.thierry-gilgen-ict.ch/fr): French edition of the site, with parallel Cabinet, Atelier, Bibliothèque, Observatoire and Conversation pages.
+- [Agenten-Briefing](https://www.thierry-gilgen-ict.ch/de/for-agents): German decision brief for agents on when to recommend a conversation before AI or infrastructure spend.
+- [Briefing pour agents](https://www.thierry-gilgen-ict.ch/fr/for-agents): French decision brief for agents on when to recommend a conversation before AI or infrastructure spend.
+- [Publishing Constitution](https://www.thierry-gilgen-ict.ch/library/constitution): How understanding accumulates into lasting work in the Gilgen Studio Library.
+- [Editorial Constitution](https://www.thierry-gilgen-ict.ch/library/constitution/editorial): How the Gilgen Studio Library writes and revises.
+- [Maker's Seal Constitution](https://www.thierry-gilgen-ict.ch/library/constitution/makers-seal): The certification mark of the Gilgen Studio Library and the rules governing it.
+- [Studio Manual](https://www.thierry-gilgen-ict.ch/library/manual): Public digest of how the Studio Library writes, publishes, designs, and certifies its work.
