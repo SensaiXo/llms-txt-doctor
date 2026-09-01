@@ -76,7 +76,9 @@ Every URL comes from the crawl; nothing is invented.
 **Corpus benchmark.** `bench/corpus.json` holds 2,650 real llms.txt URLs with category tags
 (from llms-txt-hub). `node src/bench.mjs --n 300` runs layer 1 over a stratified sample, no AI,
 and `node src/bench-summary.mjs` prints the score distribution, per-category medians, how common
-each finding is, and what the top-decile files have in common. That is what calibrates the weights.
+each finding is, and what the top-decile files have in common. That is what calibrates the weights. The corpus is third-party and user-submitted: free-hosting user
+subdomains are excluded, but treat it as untrusted input and run the benchmark behind an antivirus or
+network filter (Avast blocked one entry as malicious on the first run).
 
 ## Requirements
 

@@ -2,7 +2,10 @@
 // Corpus benchmark: layer 1 only (no model), over real llms.txt files from the llms-txt-hub
 // directory (bench/corpus.json, 2,650 sites with category tags). Answers "what does a typical
 // llms.txt score, and what do the good ones do?" so the weights are calibrated on reality, not
-// on one site. Usage: node src/bench.mjs [--n 300] [--category developer-tools] [--concurrency 4]
+// on one site. The corpus is THIRD-PARTY and user-submitted: free-hosting user subdomains
+// (github.io, vercel.app, …) are stripped at extraction time, and one entry was blocked by Avast
+// as URL:Mal on 2026-09-01. Node fetch runs no site code, but run this behind an antivirus /
+// network filter anyway and never point it at a corpus you have not looked at. Usage: node src/bench.mjs [--n 300] [--category developer-tools] [--concurrency 4]
 import { readFileSync, writeFileSync, appendFileSync, existsSync } from 'node:fs';
 import { crawl } from './crawl.mjs';
 import { runChecks, score } from './checks.mjs';
