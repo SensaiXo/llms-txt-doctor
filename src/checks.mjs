@@ -16,6 +16,13 @@ export function runChecks(c) {
   }
   const p = c.llms.parsed;
 
+  // A catch-all rewrite that returns the homepage for every unknown path is the most common way an
+  // llms.txt "exists" without existing. Name it, do not report it as "no H1".
+  if (/text\/html/i.test(c.llms.contentType) || /^\s*(﻿)?<!doctype\s+html|^\s*<html/i.test(c.llms.raw)) {
+    add('LLMS_IS_HTML', 'BLOCKING', `/llms.txt returns an HTML page (${c.llms.contentType || 'no content-type'}), probably a catch-all rewrite serving the homepage; agents get a web page, not the file`, [c.llms.url]);
+    return f;
+  }
+
   // encoding + transport
   if (!c.llms.encoding.valid) add('ENCODING_INVALID_UTF8', 'BLOCKING', 'llms.txt is not valid UTF-8');
   if (c.llms.encoding.mojibake) add('ENCODING_MOJIBAKE', 'BLOCKING', `${c.llms.encoding.mojibake} mojibake sequence(s) (text double-encoded, e.g. "Ã¼" for "ü")`);

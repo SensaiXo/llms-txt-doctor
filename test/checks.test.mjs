@@ -48,3 +48,10 @@ test('markdown twin candidates follow the spec', () => {
   assert.deepEqual(markdownTwinCandidates('https://x.ch/de/'), ['https://x.ch/de/index.md', 'https://x.ch/de/index.html.md', 'https://x.ch/de.md']);
   assert.deepEqual(markdownTwinCandidates('https://x.ch/de/page.md'), []);
 });
+
+test('HTML served at /llms.txt is named, not reported as missing H1', () => {
+  const raw = '<!DOCTYPE html><html><head><title>x</title></head><body>hi</body></html>';
+  const f = runChecks(mkCase(raw, [], { llms: { url: 'https://x.ch/llms.txt', status: 200, contentType: 'text/html; charset=UTF-8', bytes: raw.length, raw, encoding: { valid: true, mojibake: 0, replacement: 0 }, parsed: parseLlmsTxt(raw) } }));
+  assert.deepEqual(ids(f), ['LLMS_IS_HTML']);
+  assert.equal(f[0].severity, 'BLOCKING');
+});
