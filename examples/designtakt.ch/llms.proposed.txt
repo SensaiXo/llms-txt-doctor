@@ -1,0 +1,72 @@
+# designtakt
+
+> designtakt GmbH is a Swiss agency in Bern, Switzerland for websites, branding and SEO/AEO, founded by Juliane Rettich (Strategy & Design) and Patrick Hux (Development & SEO/AEO), with strategy, design and development in-house. It builds Webflow websites (Webflow Certified Partner since 2023) and web applications in Next.js, React and Supabase, plus branding and SEO/AEO, for startups, SMEs and corporates in the DACH region. Engagements start with a discovery call followed by a fixed-price proposal; the team has 8+ years of experience in design and development. All pages linked below are in German; this file is in English. (verify: total project count — the site currently states 60+, 50+ and 30+ in different places.)
+
+## Core Services
+
+- [Services](https://www.designtakt.ch/services): Overview of every service from the first idea to the finished product, with an FAQ on process and collaboration.
+- [Webseiten](https://www.designtakt.ch/services/webseiten): Custom websites with modular CMS architecture, SEO/AEO and analytics, developed for performance and conversion.
+- [SEO & AEO](https://www.designtakt.ch/services/seo-aeo): SEO strategy, technical SEO, content workflows and AEO for visibility with crawlers, LLMs and AI assistants.
+- [Branding](https://www.designtakt.ch/services/branding): Brand strategy, clear messaging and visual identities built to stay relevant long term.
+- [Webflow Agentur](https://www.designtakt.ch/services/webflow-agentur): Webflow Certified Partner since 2023, designing and developing websites for startups, SMEs and corporates in the DACH region.
+- [Web-Applikationen & Softwareentwicklung](https://www.designtakt.ch/services/web-applikationen-softwareentwicklung): Web applications, portals, dashboards and SaaS products in Next.js, React and Supabase, from design to deployment.
+
+## Industries
+
+- [Software](https://www.designtakt.ch/branche/software): Webflow builds, branding and SEO/AEO work for software and SaaS companies.
+- [Technologie](https://www.designtakt.ch/branche/technologie): Projects in the technology sector.
+- [Strategie & Beratung](https://www.designtakt.ch/branche/strategie-beratung): Projects for strategy and consulting firms.
+- [Architektur](https://www.designtakt.ch/branche/architektur): Projects for architecture practices.
+- [Luxus](https://www.designtakt.ch/branche/luxus): Projects in the luxury segment.
+- [Nachhaltigkeit](https://www.designtakt.ch/branche/nachhaltigkeit): Projects in the sustainability sector.
+- [Event](https://www.designtakt.ch/branche/event): Projects for event organisers.
+- [Immobilien](https://www.designtakt.ch/branche/immobilien): Projects for real estate companies.
+
+## Case Studies
+
+- [Projekte](https://www.designtakt.ch/projekte): Index of selected client projects.
+- [Pricenow](https://www.designtakt.ch/projekte/pricenow): Scalable Webflow platform for the Swiss dynamic-pricing SaaS Pricenow, with modular CMS, HubSpot connection and custom illustrations.
+- [ecoplanet](https://www.designtakt.ch/projekte/ecoplanet): Technical Webflow relaunch for the SaaS company Ecoplanet with modular content architecture, scalable CMS and a clean SEO/AEO base.
+- [Gübelin Gem Museum](https://www.designtakt.ch/projekte/guebelin-gem-museum): Webflow website connecting history and technology through an interactive timeline and clear user guidance.
+- [Palixo](https://www.designtakt.ch/projekte/palixo): Branding and modular Webflow platform translating a railway AI startup's solution into a clear modern brand.
+- [beyondnoise](https://www.designtakt.ch/projekte/beyondnoise): Brand identity and high-performance website built with Astro and Tailwind for a competitive-intelligence B2B SaaS.
+- [Universal Gebäudemanagement AG](https://www.designtakt.ch/projekte/universal-gebaeudemanagement-ag): New Webflow website and social media strategy to reach customers and skilled staff and streamline applications.
+
+## Guides
+
+- [Blog](https://www.designtakt.ch/blog): Practical guides on Webflow, SEO/AEO, web design and digital strategy for marketing teams.
+- [Content für KI optimieren](https://www.designtakt.ch/blog/wie-optimiert-man-content-fur-chatgpt-perplexity-claude): How content must be built so ChatGPT, Perplexity and Google AI Overviews cite it as a source.
+- [AI Overviews und SEO](https://www.designtakt.ch/blog/seo-ist-nicht-tot-warum-gutes-seo-auch-im-ki-zeitalter-funktioniert): Why AI changes how results are shown but not the rules — intent fit, structure and source authority.
+- [Schema Markup in Webflow](https://www.designtakt.ch/blog/schema-markup-so-verstehen-suchmaschinen-und-ki-deine-inhalte): Implementing BlogPost, FAQ and JobPosting schema in Webflow for rich snippets and AI Overviews.
+- [Google Search Console Guide](https://www.designtakt.ch/blog/google-search-console-dein-guide-fuer-besseren-organischen-traffic): Which pages bring traffic and where crawling breaks, with setup instructions, best practices and a tool comparison.
+- [Von WordPress zu Webflow migrieren](https://www.designtakt.ch/blog/von-wordpress-zu-webflow-dein-strategischer-migrations-guide): What a WordPress-to-Webflow migration covers, who it suits and how a marketing team benefits.
+- [Von TYPO3 zu Webflow migrieren](https://www.designtakt.ch/blog/von-typo3-zu-webflow-dein-strategischer-migrations-guide): Strategy, sequence and pitfalls of a TYPO3-to-Webflow move for SME marketing teams and managing directors.
+- [Webflow zu Sanity migrieren](https://www.designtakt.ch/blog/webflow-zu-sanity-migrieren-wann-es-sich-lohnt-und-was-es-kostet): When the switch pays off, what it costs (CHF 8'000 to 60'000+) and how to protect SEO rankings during the migration.
+- [Braucht man 2026 noch ein CMS?](https://www.designtakt.ch/blog/braucht-man-2026-noch-ein-cms): Content as code or CMS, decided by who maintains the content rather than by the trend.
+- [Webflow CMS API Guide](https://www.designtakt.ch/blog/webflow-cms-api-der-komplette-guide-fur-marketing-teams): Automating content updates, integrating systems and scaling internationally, with use cases and a three-stage plan.
+- [Webflow 2026](https://www.designtakt.ch/blog/webflow-2025-warum-immer-mehr-unternehmen-auf-das-no-code-cms-setzen): Why companies choose Webflow — visual design with clean code, automatic backups, modular system, stable infrastructure.
+- [UX/UI Audit](https://www.designtakt.ch/blog/code-wird-zur-commodity-ux-und-ui-machen-den-unterschied): Why code becomes a commodity, how a UX/UI audit measurably improves digital products and what it costs.
+
+## Company
+
+- [designtakt](https://www.designtakt.ch/): Homepage of the Swiss agency for websites, branding and SEO/AEO.
+- [Über uns](https://www.designtakt.ch/ueber-uns): Founding team and approach, with 8+ years of team experience in design and development.
+- [Kontakt](https://www.designtakt.ch/kontakt): Contact form or hello@designtakt.ch, with a reply within a few hours.
+- [Der Prozess einer Webseite bei designtakt](https://www.designtakt.ch/blog/der-prozess-einer-webseite-bei-designtakt-unser-system-mit-30-umgesetzten-projekten): The five-step process linking strategy, messaging, design and development, tested on 30+ website projects.
+- [LinkedIn](https://ch.linkedin.com/company/designtakt): Company profile (verify: not covered by the crawl).
+
+## Optional
+
+- [Impressum](https://www.designtakt.ch/impressum): Legal information about designtakt GmbH.
+- [Datenschutz](https://www.designtakt.ch/datenschutz): Information on data protection and your rights.
+- [AGB](https://www.designtakt.ch/agb): All legal aspects of a collaboration; the AGB are accepted when a proposal is accepted.
+- [Glossar](https://www.designtakt.ch/glossar): Key terms from web design, branding and digital marketing explained.
+- [Rexult](https://www.designtakt.ch/projekte/rexult): Webflow relaunch that replaced manual content maintenance and relieved the marketing team.
+- [Rise Engineers](https://www.designtakt.ch/projekte/rise-engineers): Minimalist site with a strong design language and generous whitespace that keeps the focus on the projects.
+- [Luzerner Sinfonieball](https://www.designtakt.ch/projekte/luzerner-sinfonieball): Modular Webflow event platform with CMS autonomy for yearly identity changes.
+- [Lumos Framework für Webflow](https://www.designtakt.ch/blog/lumos-framework-fur-webflow-unsere-agentur-erfahrungen): Why designtakt moved from Client First to Lumos as its Webflow standard.
+- [Technical Debt vermeiden](https://www.designtakt.ch/blog/technical-debt-bei-websites-vermeiden-so-sparst-du-zeit-geld-nerven-designtakt): Six steps against unsystematic CMS structures, missing design systems and performance problems.
+- [5 Gründe für Webflow](https://www.designtakt.ch/blog/5-grunde-warum-webflow-deine-nachste-webdesign-plattform-sein-sollte): Design flexibility without code, integrated hosting, SEO control and real-time editing.
+- [ICP-Messaging für B2B SaaS](https://www.designtakt.ch/blog/icp-messaging-b2b-saas): How ICP-specific website copy produces more qualified demos.
+- [Marketing-Blindspots aufdecken](https://www.designtakt.ch/blog/messaging-und-copywriting-warum-webseiten-projekte-marketing-blindspots-entlarven): Messaging framework covering status quo, relevance, urgency, differentiation and trust.
+- [Shitty First Draft](https://www.designtakt.ch/blog/schluss-mit-perfektionismus-wie-der-shitty-first-draft-deine-arbeit-verbessert): Working iteratively from first draft to final version, with examples from content, design and development.
