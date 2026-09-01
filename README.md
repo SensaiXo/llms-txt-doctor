@@ -9,8 +9,11 @@ one flat `## Pages` list, do the claims agree with the pages, are the important 
 links point at markdown or at HTML nobody should make an agent parse? This tool answers that.
 
 ```
-npx is-agent-ready schnellstart.ai
+npx github:SensaiXo/llms-txt-doctor schnellstart.ai
 ```
+
+(Runs straight from this repository; no install, no npm account needed. If the package is later
+published to the npm registry as `is-agent-ready`, `npx is-agent-ready <host>` will work too.)
 
 Output in `runs/<host>-<stamp>/`: `report.md`, `llms.proposed.txt`, the frozen `case.md`, and the
 four reviewer reports.
