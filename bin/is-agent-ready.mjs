@@ -14,7 +14,7 @@ import { claudeAvailable } from '../src/claude-available.mjs';
 const args = process.argv.slice(2);
 const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const rawTarget = args.find((a) => !a.startsWith('--'));
-if (!rawTarget) { console.error('usage: is-agent-ready <host or url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--reports dir] [--llms-url url] [--json]'); process.exit(1); }
+if (!rawTarget) { console.error('usage: is-agent-ready <host or url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--reports dir] [--llms-url url] [--questions file.json] [--json]'); process.exit(1); }
 let url;
 try { url = normalizeTarget(rawTarget); } catch (e) { console.error(e.message); process.exit(1); }
 const hasClaude = claudeAvailable();
@@ -55,7 +55,7 @@ if (!args.includes('--no-qa') && hasClaude && c.llms.parsed) {
   const qaModel = opt('--qa-model', 'sonnet');
   console.log(`\n${BOLD}agent test${RESET} ${DIM}(sealed ${qaModel}, only llms.txt + up to 2 fetches per question)${RESET}`);
   try {
-    qa = await runQa(c, { model: qaModel, onStep: (label, done) => process.stdout.write(done ? ` ✓\n` : `  ${label}`) });
+    qa = await runQa(c, { model: qaModel, questionsFile: opt('--questions', null), onStep: (label, done) => process.stdout.write(done ? ` ✓\n` : `  ${label}`) });
     const s = qa.summary;
     console.log(`  ${BOLD}${s.correct}/${s.total} correct${RESET}, ${s.wrong ? '🟥 ' : ''}${s.wrong} wrong, ${s.declined} declined`);
     for (const it of qa.items.filter((x) => x.grade !== 'CORRECT')) console.log(`  ${it.grade === 'WRONG' ? '🟥' : '·'} ${it.grade.padEnd(8)} ${it.question}`);

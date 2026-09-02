@@ -11,7 +11,7 @@
 // Result: a measurement ("with only your llms.txt an agent answered 6/10, got 2 wrong") instead
 // of an opinion. WRONG is the number that matters: a file that makes agents invent facts is
 // worse than one that makes them say "I don't know".
-import { rmSync } from 'node:fs';
+import { rmSync, readFileSync } from 'node:fs';
 import { fetchRaw, decodeUtf8, isHtml, htmlToText } from './fetch.mjs';
 import { runIsolated, splitPrompt, makeSandbox } from './lenses.mjs';
 
@@ -45,7 +45,9 @@ async function fetchText(url, cache, timeoutMs) {
   return out;
 }
 
-export async function runQa(c, { model = 'sonnet', timeoutMs = 10_000, onStep = () => {} } = {}) {
+// questionsFile: JSON array of { q, expectUrl, expectFact }. A FROZEN set makes runs comparable
+// (pre-registered benchmarking); without it a sealed writer generates fresh questions each run.
+export async function runQa(c, { model = 'sonnet', timeoutMs = 10_000, onStep = () => {}, questionsFile = null } = {}) {
   const sandbox = makeSandbox();
   const cache = new Map();
   // Seed the cache with what the crawl already fetched so the agent's picks cost nothing extra.
@@ -62,7 +64,10 @@ export async function runQa(c, { model = 'sonnet', timeoutMs = 10_000, onStep = 
     return out;
   };
   try {
-    const questions = parseJson(await ask('qa-questions.md', { DIGEST: siteDigest(c) }, 'questions')).slice(0, 10);
+    const questions = (questionsFile
+      ? JSON.parse(readFileSync(questionsFile, 'utf8'))
+      : parseJson(await ask('qa-questions.md', { DIGEST: siteDigest(c) }, 'questions'))).slice(0, 10);
+    if (questionsFile) onStep('questions (frozen set)', true);
     const qText = questions.map((q, i) => `${i}. ${q.q}`).join('\n');
     const picks = parseJson(await ask('qa-pick.md', { LLMS: c.llms.raw, QUESTIONS: qText }, 'pick'));
     const wanted = new Set();
