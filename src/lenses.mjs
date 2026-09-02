@@ -29,6 +29,11 @@ export function runIsolated(sandbox, model, systemPrompt, userPrompt, onChunk = 
       '--model', model, '--output-format', 'stream-json', '--verbose', '--system-prompt-file', sysFile,
     ], { cwd: sandbox, shell: process.platform === 'win32', env: { ...process.env, CLAUDE_CODE_DISABLE_AUTO_MEMORY: '1', CLAUDE_CODE_DISABLE_CLAUDE_MDS: '1' } });
     let out = '', err = '';
+    // A child that exits before reading its stdin makes the write emit EOF/EPIPE on the socket;
+    // without a handler that is an uncaught 'error' event and kills the whole process
+    // (seen 2026-09-02 running two audits in parallel). Swallow it; the close handler decides.
+    child.stdin.on('error', () => {});
+    child.on('error', (e) => reject(e));
     child.stdout.on('data', (d) => {
       for (const line of d.toString().split('\n')) {
         if (!line.trim()) continue;
@@ -44,7 +49,7 @@ export function runIsolated(sandbox, model, systemPrompt, userPrompt, onChunk = 
     });
     child.stderr.on('data', (d) => (err += d));
     child.on('close', (code) => (code === 0 || out ? resolve(out) : reject(new Error(err || `exit ${code}`))));
-    child.stdin.end(userPrompt);
+    try { child.stdin.end(userPrompt); } catch { /* surfaced by the close/error handlers */ }
   });
 }
 
