@@ -14,7 +14,7 @@ import { claudeAvailable } from '../src/claude-available.mjs';
 const args = process.argv.slice(2);
 const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const rawTarget = args.find((a) => !a.startsWith('--'));
-if (!rawTarget) { console.error('usage: is-agent-ready <host or url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--reports dir] [--json]'); process.exit(1); }
+if (!rawTarget) { console.error('usage: is-agent-ready <host or url> [--out dir] [--model opus|sonnet] [--qa-model sonnet] [--no-lenses] [--no-qa] [--max-pages n] [--reports dir] [--llms-url url] [--json]'); process.exit(1); }
 let url;
 try { url = normalizeTarget(rawTarget); } catch (e) { console.error(e.message); process.exit(1); }
 const hasClaude = claudeAvailable();
@@ -30,7 +30,12 @@ const DIM = '\x1b[2m', BOLD = '\x1b[1m', RESET = '\x1b[0m';
 const log = (m) => console.error(`${DIM}› ${m}${RESET}`);
 
 // ---- layer 1: deterministic ---------------------------------------------------------------
-const c = await crawl(url, { maxPages, log });
+// --llms-url audits a CANDIDATE file (e.g. served from localhost) against the live site,
+// for propose-only improvement loops. Never ledger such a run as the live file's score
+// without labelling it: the fingerprint will differ from the live file's.
+const llmsUrl = opt('--llms-url', null);
+if (llmsUrl) console.log(`${DIM}auditing candidate llms.txt from ${llmsUrl} against ${url}${RESET}`);
+const c = await crawl(url, { maxPages, log, llmsUrl });
 const findings = runChecks(c);
 const detScore = score(findings);
 const frozen = buildCase(c, findings);
